@@ -1,0 +1,6 @@
+{
+  "plugins": ["transform-react-jsx"],
+  "ignore": [
+    "node_modules"
+  ]
+}

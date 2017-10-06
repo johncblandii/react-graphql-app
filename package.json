@@ -1,0 +1,40 @@
+{
+  "name": "react-rest-app",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"react-scripts start\"",
+    "server": "json-server server/api/db.json --watch",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "flow": "flow",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "dependencies": {
+    "apollo-client": "^1.9.3",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "classnames": "^2.2.5",
+    "core-js": "^2.5.1",
+    "flow-bin": "^0.56.0",
+    "graphql-tag": "^2.4.2",
+    "history": "^4.7.2",
+    "material-ui": "next",
+    "material-ui-icons": "^1.0.0-beta.15",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "react-router-redux": "next",
+    "react-scripts": "1.0.14",
+    "redux": "^3.7.2",
+    "redux-form": "^7.1.0"
+  },
+  "devDependencies": {
+    "babel-jest": "^21.2.0",
+    "concurrently": "^3.5.0",
+    "json-server": "^0.12.0"
+  }
+}
