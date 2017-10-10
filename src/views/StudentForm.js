@@ -11,16 +11,14 @@ import * as actions from '../redux';
 
 class StudentListComponent extends Component {
   static propTypes = {
-    allowDelete: PropTypes.bool,
-    allowSelection: PropTypes.bool,
     deleteStudent: PropTypes.func.isRequired,
+    isSelectable: PropTypes.bool,
     selectStudent: PropTypes.func.isRequired,
     students: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
-    allowDelete: true,
-    allowSelection: true,
+    isSelectable: true
   }
 
   render() {
@@ -36,13 +34,13 @@ class StudentListComponent extends Component {
   _renderStudent = (id) => {
     return (
       <div key={id}>
-        <ListItem divider button={this.props.allowSelection} onClick={() => this._onSelect(id)}>
+        <ListItem divider button={this.props.isSelectable} onClick={() => this._onSelect(id)}>
           <ListItemText inset primary={`${this.props.students.byId[id].firstName} ${this.props.students.byId[id].lastName}`} />
-          {this.props.allowDelete && <ListItemSecondaryAction>
+          <ListItemSecondaryAction>
             <IconButton aria-label="Close" onClick={() => this._onDelete(id)}>
               <CloseIcon />
             </IconButton>
-          </ListItemSecondaryAction>}
+          </ListItemSecondaryAction>
         </ListItem>
       </div>
     );
@@ -53,7 +51,7 @@ class StudentListComponent extends Component {
   }
 
   _onSelect = (id) => {
-    if (!this.props.allowSelection) return;
+    if (!this.props.isSelectable) return;
 
     this.props.selectStudent(id);
   }
@@ -67,10 +65,10 @@ const mapStateToProps = (state) => {
 
 const mapActionsToProps = (dispatch) => {
   return {
-    deleteStudent: (studentId: number) => {
-      dispatch(actions.deleteStudent(studentId));
+    createStudent: (student: number) => {
+      dispatch(actions.selectStudent(studentId));
     },
-    selectStudent: (studentId: number) => {
+    updateStudent: (student: number) => {
       dispatch(actions.selectStudent(studentId));
     }
   }

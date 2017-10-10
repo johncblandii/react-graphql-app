@@ -13,7 +13,7 @@ export class HomeView extends Component {
               <Typography type="display1">
                 Courses
               </Typography>
-              <views.CourseList />
+              <views.CourseList allowSelection={false} allowDelete={false} />
             </CardContent>
           </Card>
         </Grid>
@@ -23,7 +23,7 @@ export class HomeView extends Component {
               <Typography type="display1">
                 Students
               </Typography>
-              <views.StudentList />
+              <views.StudentList allowSelection={false} allowDelete={false} />
             </CardContent>
           </Card>
         </Grid>

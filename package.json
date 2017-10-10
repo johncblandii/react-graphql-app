@@ -12,12 +12,12 @@
     "test": "react-scripts test --env=jsdom"
   },
   "dependencies": {
-    "apollo-client": "^1.9.3",
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "classnames": "^2.2.5",
     "core-js": "^2.5.1",
     "flow-bin": "^0.56.0",
+    "graphql-request": "^1.4.0",
     "graphql-tag": "^2.4.2",
     "history": "^4.7.2",
     "material-ui": "next",

@@ -11,8 +11,16 @@ import * as actions from '../redux';
 
 class CourseListComponent extends Component {
   static propTypes = {
+    allowDelete: PropTypes.bool,
+    allowSelection: PropTypes.bool,
     courses: PropTypes.object.isRequired,
     deleteCourse: PropTypes.func.isRequired,
+    selectCourse: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    allowSelection: true,
+    allowDelete: true,
   }
 
   render() {
@@ -28,13 +36,13 @@ class CourseListComponent extends Component {
   _renderCourse = (id) => {
     return (
       <div key={id}>
-        <ListItem divider>
-          <ListItemText inset primary={this.props.courses.byId[id].title} />
-          <ListItemSecondaryAction>
+        <ListItem divider button={this.props.allowSelection} onClick={() => this._onSelect(id)}>
+          <ListItemText inset primary={this.props.courses.byId[id].name} />
+          {this.props.allowDelete && <ListItemSecondaryAction>
             <IconButton aria-label="Close" onClick={() => this._onCourseDelete(id)}>
               <CloseIcon />
             </IconButton>
-          </ListItemSecondaryAction>
+          </ListItemSecondaryAction>}
         </ListItem>
       </div>
     );
@@ -43,9 +51,16 @@ class CourseListComponent extends Component {
   _onCourseDelete = (id) => {
     if (confirm('Are you sure?')) this.props.deleteCourse(id);
   }
+
+  _onSelect = (id) => {
+    if (!this.props.allowSelection) return;
+
+    this.props.selectCourse(id);
+  }
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.selectedCourse);
   return {
     courses: state.courses,
   }
@@ -55,6 +70,9 @@ const mapActionsToProps = (dispatch) => {
   return {
     deleteCourse: (courseId: number) => {
       dispatch(actions.deleteCourse(courseId));
+    },
+    selectCourse: (courseId: number) => {
+      dispatch(actions.selectCourse(courseId));
     }
   }
 }
