@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
 import {Grid, Card, CardContent, Typography} from 'material-ui';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 import * as views from './';
 
-export class StudentView extends Component {
+class StudentViewComponent extends Component {
+  static propTypes = {
+    currentStudent: PropTypes.object,
+  };
+
   render() {
     return (
       <Grid container>
@@ -13,7 +19,7 @@ export class StudentView extends Component {
               <Typography type="display1">
                 Students
               </Typography>
-              <views.StudentList />
+              <views.StudentList currentStudent={this.props.currentStudent} />
             </CardContent>
           </Card>
         </Grid>
@@ -21,7 +27,7 @@ export class StudentView extends Component {
           <Card>
             <CardContent>
               <Typography type="display1">
-                Form
+                {this.props.currentStudent && this.props.currentStudent.id ? 'Edit' : 'Create'}
               </Typography>
               <views.StudentForm />
             </CardContent>
@@ -31,3 +37,13 @@ export class StudentView extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const currentStudent = (state.students && state.students.byId[state.selectedStudent]) || {};
+
+  return {
+    currentStudent
+  }
+}
+
+export const StudentView = connect(mapStateToProps)(StudentViewComponent);

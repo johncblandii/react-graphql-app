@@ -13,64 +13,88 @@ class StudentListComponent extends Component {
   static propTypes = {
     allowDelete: PropTypes.bool,
     allowSelection: PropTypes.bool,
+    currentStudent: PropTypes.object,
     deleteStudent: PropTypes.func.isRequired,
     selectStudent: PropTypes.func.isRequired,
-    students: PropTypes.object.isRequired,
+    students: PropTypes.object.isRequired
   }
 
   static defaultProps = {
     allowDelete: true,
-    allowSelection: true,
+    allowSelection: true
   }
 
   render() {
-    if (!this.props.students || this.props.students.allIds.length === 0) return null;
+    if (!this.props.students || this.props.students.allIds.length === 0)
+      return null;
 
     return (
       <List>
-        {this.props.students.allIds.map(this._renderStudent)}
+        {this
+          .props
+          .students
+          .allIds
+          .map(this._renderStudent)}
       </List>
     );
   }
 
-  _renderStudent = (id) => {
+  _renderStudent = (id : string) => {
+    // TODO: use this to denote the selection state?
+    // let isSelected = this.props.currentStudent && this.props.currentStudent.id !== undefined;
+
+    let name = `${this.props.students.byId[id].firstName} ${this.props.students.byId[id].lastName}`;
+
     return (
       <div key={id}>
-        <ListItem divider button={this.props.allowSelection} onClick={() => this._onSelect(id)}>
-          <ListItemText inset primary={`${this.props.students.byId[id].firstName} ${this.props.students.byId[id].lastName}`} />
-          {this.props.allowDelete && <ListItemSecondaryAction>
-            <IconButton aria-label="Close" onClick={() => this._onDelete(id)}>
-              <CloseIcon />
-            </IconButton>
-          </ListItemSecondaryAction>}
+        <ListItem
+          button={this.props.allowSelection}
+          divider
+          onClick={() => this._onSelect(id)}>
+          <ListItemText inset primary={name}/> {this._renderDelete(id)}
         </ListItem>
       </div>
     );
   }
 
-  _onDelete = (id) => {
-    if (confirm('Are you sure?')) this.props.deleteStudent(id);
+  _renderDelete = (id : string) => {
+    if (!this.props.allowDelete)
+      return;
+
+    return (
+      <ListItemSecondaryAction>
+        <IconButton aria-label="Close" onClick={() => this._onDelete(id)}>
+          <CloseIcon/>
+        </IconButton>
+      </ListItemSecondaryAction>
+    );
   }
 
-  _onSelect = (id) => {
-    if (!this.props.allowSelection) return;
+  _onDelete = (id) => {
+    if (confirm('Are you sure?'))
+      this.props.deleteStudent(id);
+    }
 
-    this.props.selectStudent(id);
+  _onSelect = (id) => {
+    if (!this.props.allowSelection)
+      return;
+
+    this
+      .props
+      .selectStudent(id);
   }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    students: state.students,
-  }
+  return {students: state.students}
 }
 
 const mapActionsToProps = (dispatch) => {
   return {
-    deleteStudent: (studentId: number) => {
+    deleteStudent: (studentId : number) => {
       dispatch(actions.deleteStudent(studentId));
     },
-    selectStudent: (studentId: number) => {
+    selectStudent: (studentId : number) => {
       dispatch(actions.selectStudent(studentId));
     }
   }
