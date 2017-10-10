@@ -2,71 +2,76 @@
 
 import {request} from 'graphql-request';
 
-const fragments = {
-  courses: `
-    fragment courseFields on Course {
-      id
-      name
-      description
-      level
-    }
-  `
-};
+import {GraphURL} from './constants';
+import {AllStudentsQuery, CreateStudentMutation, UpdateStudentMutation, DeleteStudentMutation} from './studentsGql';
 
-const AllStudentsQuery = `
-query allStudents {
-  allStudents {
-    id
-    firstName
-    lastName
-    active
-    courses {
-      ...courseFields
-    }
-  }
-}
-${fragments.courses}
-`;
-
+// Loads students
+//
+// Dispatches ADD_STUDENT for each student returned to normalize the data
 export function loadStudents() {
-  return (dispatch: Function) => {
-    request('https://api.graph.cool/simple/v1/cj864jf2302n30112ip74zkoy', AllStudentsQuery)
-      .then((data) => {
-        data.allStudents.map((student) => {
-          dispatch({
-            type: 'ADD_STUDENT',
-            payload: student,
-          })
+  return (dispatch : Function) => {
+    request(GraphURL, AllStudentsQuery).then((data) => {
+      data
+        .allStudents
+        .forEach((student) => {
+          dispatch({type: 'ADD_STUDENT', payload: student});
         })
+    });
+  };
+}
+
+// Delete a student by `studentId`
+//
+// Dispatches REMOVE_STUDENT to remove the student from the store
+export function deleteStudent(studentId : number) {
+  return (dispatch : Function) => {
+    request(GraphURL, DeleteStudentMutation, {id: studentId}).then((data) => {
+      dispatch({
+        type: 'REMOVE_STUDENT',
+        payload: {
+          id: studentId
+        }
       });
+    })
   };
 }
 
-export function deleteStudent(studentId: number) {
-  return (dispatch: Function) => {
+// Create a student
+//
+// Dispatches `loadStudents` to reload the student list
+export function createStudent(student : object) {
+  return (dispatch : Function) => {
+    request(GraphURL, CreateStudentMutation, student).then((data) => {
+      dispatch(loadStudents());
+    })
   };
 }
 
-export function createStudent(student: object) {
-  return (dispatch: Function) => {
-    console.log('CREATE', student);
-  };
-}
-export function updateStudent(student: object) {
-  return (dispatch: Function) => {
-    console.log('UPDATE', student);
+// Update a student
+//
+// Dispatches `deselectStudent` immediately to clear the selection.
+//
+// On complete, dispatches `loadStudents` to reload the student list.
+export function updateStudent(student : object) {
+  return (dispatch : Function) => {
+    dispatch(deselectStudent());
+
+    request(GraphURL, UpdateStudentMutation, student).then((data) => {
+      dispatch(loadStudents());
+    })
   };
 }
 
-export function selectStudent(studentId: number) {
-  return {
-    type: 'SET_SELECTED_STUDENT',
-    payload: studentId,
-  };
+// Selects a student by `id`
+//
+// Dispatches `SET_SELECTED_STUDENT` with `id` as the payload
+export function selectStudent(id : number) {
+  return {type: 'SET_SELECTED_STUDENT', payload: id};
 }
 
-export function deselectStudent(studentId: number) {
-  return {
-    type: 'REMOVE_SELECTED_STUDENT',
-  };
+// Deselects the student
+//
+// Dispatches `REMOVE_SELECTED_STUDENT` with `id` as the payload
+export function deselectStudent() {
+  return {type: 'REMOVE_SELECTED_STUDENT'};
 }
