@@ -30,7 +30,9 @@
     "react-router-redux": "next",
     "react-scripts": "1.0.14",
     "redux": "^3.7.2",
-    "redux-form": "^7.1.0"
+    "redux-data-structures": "^0.1.6",
+    "redux-form": "^7.1.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-jest": "^21.2.0",
