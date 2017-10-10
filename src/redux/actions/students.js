@@ -47,9 +47,26 @@ export function deleteStudent(studentId: number) {
   };
 }
 
+export function createStudent(student: object) {
+  return (dispatch: Function) => {
+    console.log('CREATE', student);
+  };
+}
+export function updateStudent(student: object) {
+  return (dispatch: Function) => {
+    console.log('UPDATE', student);
+  };
+}
+
 export function selectStudent(studentId: number) {
   return {
     type: 'SET_SELECTED_STUDENT',
     payload: studentId,
+  };
+}
+
+export function deselectStudent(studentId: number) {
+  return {
+    type: 'REMOVE_SELECTED_STUDENT',
   };
 }

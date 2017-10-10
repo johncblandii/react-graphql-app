@@ -23,6 +23,7 @@ export class StudentView extends Component {
               <Typography type="display1">
                 Form
               </Typography>
+              <views.StudentForm />
             </CardContent>
           </Card>
         </Grid>
