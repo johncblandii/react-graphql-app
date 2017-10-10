@@ -7,7 +7,7 @@ import {Provider} from 'react-redux';
 import {Route} from 'react-router-dom'
 import {ConnectedRouter} from 'react-router-redux'
 
-import {AppShell} from './app';
+import {AppShell} from './shell';
 
 import {store, routerHistory, initializeData} from './redux';
 import {CourseView, HomeView, StudentView} from './views';
