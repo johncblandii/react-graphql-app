@@ -1,3 +1,5 @@
+// Mini variant drawer form https://material-ui-next.com/demos/drawers/#mini-variant-drawer
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
